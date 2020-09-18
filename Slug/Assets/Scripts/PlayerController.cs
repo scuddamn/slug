@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float force = 5;
-    Rigidbody2D rb;
+    public float force = 3;
+    public float slowdown;
+    Rigidbody rb;
     public KeyCode up;
     public KeyCode down;
     public KeyCode left;
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -28,12 +29,22 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.right * force);
         }
 
+        if(Input.GetKeyUp(right))
+        {
+            rb.velocity = rb.velocity * slowdown; 
+        }
+
         //LEFT
         //if <left> is pressed
         if (Input.GetKey(left))
         {
             //apply a force using the "force" var
             rb.AddForce(Vector2.left * force);
+        }
+
+        if (Input.GetKeyUp(left))
+        {
+            rb.velocity = rb.velocity * slowdown;
         }
 
         //DOWN
@@ -44,6 +55,11 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.down * force);
         }
 
+        if (Input.GetKeyUp(down))
+        {
+            rb.velocity = rb.velocity * slowdown;
+        }
+
         //UP
         //if <up> is pressed
         if (Input.GetKey(up))
@@ -51,5 +67,15 @@ public class PlayerController : MonoBehaviour
             //apply a force using the "force" var
             rb.AddForce(Vector2.up * force);
         }
+
+        if (Input.GetKeyUp(up))
+        {
+            rb.velocity = rb.velocity * slowdown;
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        other.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
